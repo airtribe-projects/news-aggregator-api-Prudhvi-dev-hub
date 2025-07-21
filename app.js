@@ -9,9 +9,9 @@ const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/v1/auth',authRouter); //Mounting of auth route
-app.use('/api/v1/preferences',authGuard, userRouter); //Mounting of preferences route
-app.use('/api/v1/news', authGuard,newsRouter); //Mounting of news route
+app.use('/users',authRouter); //Mounting of auth route
+app.use('/users/preferences',authGuard, userRouter); //Mounting of preferences route
+app.use('/users/news', authGuard,newsRouter); //Mounting of news route
 
 //Health check
 app.get('/',(req,res)=>{

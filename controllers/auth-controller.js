@@ -11,8 +11,9 @@ const JWT_SECRET = 'b986697cb33cf9b6081545a47eaaab9a594fe50419e1b5a98ddd58b3ac26
 const register = async (data)=>{
     let toCreateUser = {};
     let userStorage = fs.readFileSync(authModelPath);  
-    let userList = userStorage.length>0?JSON.parse(userStorage):[]; 
-    if(validator.isEmail(data.email)){
+    let userList = userStorage.length>0?JSON.parse(userStorage):[];
+
+    if(data?.email && validator.isEmail(data.email)){
         const toHashPassword = data.password;
         //Check if email already exists
         for(const user of userList){
@@ -30,10 +31,9 @@ const register = async (data)=>{
             updatedAt: new Date().toJSON(),
             deletedAt: null,
         };
-        console.log(toCreateUser);
     }else{        
         return {status: 400,data: "Invalid Email"};
-    }    
+    }
 
     userList.push(toCreateUser);
 
@@ -41,7 +41,7 @@ const register = async (data)=>{
         console.log("File written successfully");        
     });
 
-    return {status: 201,data: "User registered successfully"};
+    return {status: 200, data: "User registered successfully"};
 }
 
 const login = async(data)=>{    
@@ -55,7 +55,7 @@ const login = async(data)=>{
                 const passwordMatch = await bcrypt.compare(data.password,dbHashedPassword);
 
                 if(!passwordMatch){                    
-                     return {status: 400,data: "Invalid Credentials"};
+                     return {status: 401,data: "Invalid Credentials"};
                 }else{
                     const token = jwt.sign({username: data.email,user_id: user.id},JWT_SECRET,{expiresIn: '1d'});
                     console.log(token);

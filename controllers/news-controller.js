@@ -24,11 +24,12 @@ const news = async(authUser)=>{
                 articles.push(...article.sources);
             }
         }
-          
+
         return {
             status: 200,
             data: {
                 articles,
+                status: 200,
                 message: "Articles list fetched successfully"
             },
         };    
@@ -42,6 +43,7 @@ const news = async(authUser)=>{
             status: 200,
             data: {
                 articles: newsArticles,
+                status: 200,
                 message: "Articles list fetched successfully"
             },
         };
