@@ -8,6 +8,7 @@ const authGuard = (req,res,next)=>{
         req.authUser = decoded;
     } catch (error) {
         console.error('Token verification failed:', error.message);
+        throw new Error("Token verification failed:", error.message);
     }
     next();
 }

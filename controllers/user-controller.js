@@ -47,8 +47,6 @@ const preferencesUpdation = async (data,authUser)=>{
 
     preferencesList = [...preferencesList,toUpdatePreference];
 
-    console.log('Pref List: ',preferencesList);
-
     fs.writeFile(preferencesModelPath,JSON.stringify(preferencesList),async (err,data)=>{
         console.log("Preference written successfully");        
     });
