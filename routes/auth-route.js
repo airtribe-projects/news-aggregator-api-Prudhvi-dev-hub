@@ -14,11 +14,8 @@ router.post('/register',async (req,res)=>{
 router.post('/login',async(req,res)=>{    
     const toLoginUser = req.body;
     console.log(toLoginUser);
-    const loginStatus = await login(toLoginUser);    
-    return res.status(loginStatus.status).send({
-        token:loginStatus.token,
-        message: loginStatus.data,
-    });
+    const loginStatus = await login(toLoginUser);
+    return res.status(loginStatus.status).send(loginStatus.data);
 });
 
 module.exports = router;

@@ -57,9 +57,12 @@ const login = async(data)=>{
                 if(!passwordMatch){                    
                      return {status: 400,data: "Invalid Credentials"};
                 }else{
-                    const token = jwt.sign({username: data.email,role: user?.role || 'user'},JWT_SECRET,{expiresIn: '1d'});
+                    const token = jwt.sign({username: data.email,user_id: user.id},JWT_SECRET,{expiresIn: '1d'});
                     console.log(token);
-                    return {status: 200,data:token};
+                    return {status: 200,data:{
+                        token,
+                        message: "Logged in successfully"
+                    }};
                 }
             }
         }

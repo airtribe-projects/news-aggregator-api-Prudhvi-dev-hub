@@ -1,0 +1,1 @@
+[{"id":"1096f367-bb59-47bc-becd-87b57787b3fe","userId":"354c88d8-8f79-4135-9633-adb735543e6b","preferences":["science","sports"],"createdAt":"2025-07-21T02:46:25.259Z","updatedAt":"2025-07-21T02:48:21.457Z","deletedAt":null}]
