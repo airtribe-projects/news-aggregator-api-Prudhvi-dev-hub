@@ -8,11 +8,11 @@ const findPreferences = async(authUser)=>{
     let preferencesList = preferencesStorage.length>0?JSON.parse(preferencesStorage):[]; 
     
     const preference = preferencesList.filter(pref=>pref.userId==authUser.user_id);    
-    return {status: 200,data: {preferences: preference.map(pref=>pref.preferences)}};    
+    return {status: 200,preferences: preference.map(pref=>pref.preferences)};    
 }
 
 const preferencesUpdation = async (data,authUser)=>{
-    let preferencesStorage = fs.readFileSync(preferencesModelPath);  
+    let preferencesStorage = fs.readFileSync(preferencesModelPath);
     let preferencesList = preferencesStorage.length>0?JSON.parse(preferencesStorage):[];    
     let toUpdatePreference = {};
 
@@ -48,10 +48,8 @@ const preferencesUpdation = async (data,authUser)=>{
         console.log("Preference written successfully");        
     });
 
-    console.log([...preferencesList.map(pref=>pref.preferences)]);
-    
-    return {status: 200,data: {preferences:[...preferencesList.map(pref=>pref.preferences)]}};
-    // {preferences: preferencesList, message:"Preference updated successfully"}
+    return {status: 200,preferences: [...preferencesList.map(pref=>pref.preferences)]};    
 }
 
 module.exports = {preferencesUpdation,findPreferences};
+

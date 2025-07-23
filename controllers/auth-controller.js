@@ -6,7 +6,10 @@ const path = require("path");
 const hashRounds = 5;
 const authModelPath = path.join(__dirname, '../models/auth-model.txt');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'b986697cb33cf9b6081545a47eaaab9a594fe50419e1b5a98ddd58b3ac26506d';
+const dotenv = require('dotenv');
+
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const register = async (data)=>{
     let toCreateUser = {};
