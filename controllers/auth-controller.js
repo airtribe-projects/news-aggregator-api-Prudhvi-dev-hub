@@ -6,6 +6,7 @@ const path = require("path");
 const hashRounds = 5;
 const authModelPath = path.join(__dirname, '../models/auth-model.txt');
 const jwt = require('jsonwebtoken');
+const {preferencesUpdation} = require('./user-controller');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -15,6 +16,7 @@ const register = async (data)=>{
     let toCreateUser = {};
     let userStorage = fs.readFileSync(authModelPath);  
     let userList = userStorage.length>0?JSON.parse(userStorage):[];
+    let toCreatePreferences = data?.preferences || [];
 
     if(data?.email && validator.isEmail(data.email)){
         const toHashPassword = data.password;
@@ -38,10 +40,13 @@ const register = async (data)=>{
         return {status: 400,data: "Invalid Email"};
     }
 
-    userList.push(toCreateUser);
+    userList.push(toCreateUser);    
 
     fs.writeFile(authModelPath,JSON.stringify(userList),async (err,data)=>{
-        console.log("File written successfully");        
+        console.log("File written successfully");     
+        if(toCreatePreferences.length){
+            await preferencesUpdation({preferences: toCreatePreferences},{user_id: toCreateUser.id});
+        }
     });
 
     return {status: 200, data: "User registered successfully"};
@@ -60,8 +65,7 @@ const login = async(data)=>{
                 if(!passwordMatch){                    
                      return {status: 401,data: "Invalid Credentials"};
                 }else{
-                    const token = jwt.sign({username: data.email,user_id: user.id},JWT_SECRET,{expiresIn: '1d'});
-                    console.log(token);
+                    const token = jwt.sign({username: data.email,user_id: user.id},JWT_SECRET,{expiresIn: '1d'});                    
                     return {status: 200,data:{
                         token,
                         message: "Logged in successfully"

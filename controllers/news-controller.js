@@ -37,7 +37,7 @@ const news = async(authUser)=>{
                         'X-Api-Key': process.env.NEWS_API_KEY,
                     }
                 });
-                const preferenceArticles = response?.data?.sources || [];                       
+                const preferenceArticles = response?.data?.sources || [];                                  
                 articles.push(...preferenceArticles);        
             }
 
@@ -45,7 +45,7 @@ const news = async(authUser)=>{
             await redisClient.setEx(preferenceKey,3600,JSON.stringify({
                 status: 200,
                 data: {
-                    articles,
+                    news: articles,
                     status: 200,
                     message: "Articles list fetched successfully"
                 },
@@ -54,7 +54,7 @@ const news = async(authUser)=>{
             return {
                 status: 200,
                 data: {
-                    articles,
+                    news: articles,
                     status: 200,
                     message: "Articles list fetched successfully"
                 },
@@ -80,7 +80,7 @@ const news = async(authUser)=>{
             await redisClient.setEx(defaultPreference,3600,JSON.stringify({
                 status: 200,
                 data: {
-                    articles: defaultArticles,
+                    news: defaultArticles,
                     status: 200,
                     message: "Articles list fetched successfully"
                 },
@@ -89,7 +89,7 @@ const news = async(authUser)=>{
             return {
                 status: 200,            
                 data: {
-                    articles: defaultArticles,
+                    news: defaultArticles,
                     status: 200,
                     message: "Articles list fetched successfully"
                 },

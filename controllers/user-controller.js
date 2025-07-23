@@ -8,7 +8,8 @@ const findPreferences = async(authUser)=>{
     let preferencesList = preferencesStorage.length>0?JSON.parse(preferencesStorage):[]; 
     
     const preference = preferencesList.filter(pref=>pref.userId==authUser.user_id);    
-    return {status: 200,preferences: preference.map(pref=>pref.preferences)};    
+    const toReturnPreference = preference?.[0]?.preferences || [];  
+    return {status: 200,preferences: toReturnPreference};
 }
 
 const preferencesUpdation = async (data,authUser)=>{
@@ -45,10 +46,10 @@ const preferencesUpdation = async (data,authUser)=>{
     preferencesList = [...preferencesList,toUpdatePreference];
 
     fs.writeFile(preferencesModelPath,JSON.stringify(preferencesList),async (err,data)=>{
-        console.log("Preference written successfully");        
+        console.log("Preference written successfully");   
     });
 
-    return {status: 200,preferences: [...preferencesList.map(pref=>pref.preferences)]};    
+    return {status: 200,preferences: toUpdatePreference.preferences};    
 }
 
 module.exports = {preferencesUpdation,findPreferences};
