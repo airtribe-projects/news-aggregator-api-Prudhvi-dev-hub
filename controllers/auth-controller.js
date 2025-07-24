@@ -21,8 +21,7 @@ const register = async (data)=>{
     if(data?.email && validator.isEmail(data.email)){
         const toHashPassword = data.password;
         //Check if email already exists
-        for(const user of userList){
-            console.log(user);
+        for(const user of userList){            
             if(user.email === data.email){                
                 return {status: 400,data: "Email already exists"};
             }
