@@ -1,9 +1,26 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const authRouter = require('./routes/auth-route');
+const userRouter = require('./routes/user-route');
+const newsRouter = require('./routes/news-route');
+const authGuard = require('./middlewares/auth');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const port = process.env.SERVER_PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/users',authRouter); //Mounting of auth route
+app.use('/users/preferences',authGuard, userRouter); //Mounting of preferences route
+app.use('/news', authGuard,newsRouter); //Mounting of news route
+
+//Health check
+app.get('/',(req,res)=>{
+    return res.status(200).send("System stable and working..");
+});
 
 app.listen(port, (err) => {
     if (err) {
